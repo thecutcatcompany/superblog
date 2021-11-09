@@ -152,3 +152,70 @@ end
 
 puts "Post: #{Post.where(blog: ulb, user: us2).count}"
 puts "Tarea 17. Hecho"
+
+#Tarea 18
+us3 = User.where(first_name: "Usuario 3").first
+Blog.all.each do |t|
+  p = Post.new
+  p.blog = t
+  p.user = us3
+  p.title = "Título"
+  p.content = "Contenido"
+  p.save
+end
+
+puts "#{Post.where(user: us3).count}"
+puts "#{us3.post.count}"
+
+puts "Tarea 18. Hecha"
+
+#Tarea 19
+# Haz que el tercer usuario cree 2 mensajes para la primera publicación creada y 3 mensajes para la segunda publicación creada.
+
+
+primpub = Post.all[0]
+secmpub = Post.all[1]
+
+1.upto(2) do |t|
+  m = Message.new
+  m.post = primpub
+  m.user = us3
+  m.author = "Autor"
+  m.message = "Mesaje"
+  m.save
+end
+
+1.upto(3) do |t|
+  m = Message.new
+  m.post = secpub
+  m.user = us3
+  m.author = "Autor"
+  m.message = "Mesaje"
+  m.save
+end
+#Contar el número de mensajes del usuario 3 
+#modelo has many
+puts us3.message.count
+#modelo belongs
+puts  Message.where(user: us3).count
+
+puts "Tarea 19. Hecha"
+
+#Tarea 20 
+# Haz que el cuarto usuario cree 3 mensajes para la última publicación que tu creaste.
+us4 = User.where(first_name: "Usuario 4").first
+
+1.upto(3) do |t|
+  m = Message.new
+  m.post = ulpub
+  m.user = us4 
+  m.author = "Algun autor"
+  m.message = "Algun comentario"
+  m.save
+end
+
+#contar los mensajes del usuario 4 
+#has meny model 
+puts us4.message.count
+#belongs to 
+puts Message.where(user: us:4).count
