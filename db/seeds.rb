@@ -124,7 +124,7 @@ puts "Tarea 15. Hecha."
 end
 
 ue = User.where(first_name: "Usuario 1").first
-be = Blog.where(first_name: "Blog 2").first
+be = Blog.where(name: "Blog 2").first
 
 puts "Posts: #{
   Post.where(user: ue, blog: be).count
@@ -172,7 +172,7 @@ puts "Tarea 18. Hecha"
 
 
 primpub = Post.all[0]
-secmpub = Post.all[1]
+secpub = Post.all[1]
 
 1.upto(2) do |t|
   m = Message.new
@@ -202,6 +202,7 @@ puts "Tarea 19. Hecha"
 #Tarea 20 
 # Haz que el cuarto usuario cree 3 mensajes para la última publicación que tu creaste.
 us4 = User.where(first_name: "Usuario 4").first
+ulpub = Post.all.last
 
 1.upto(3) do |t|
   m = Message.new
@@ -216,7 +217,7 @@ end
 #has meny model 
 puts us4.message.count
 #belongs to 
-puts Message.where(user: us:4).count
+puts Message.where(user: us4).count
 
 #Tarea 21 
 # Cambie el propietario de la 2 publicación para que sea el último usuario.
@@ -246,7 +247,7 @@ puts "Tarea 22. Hecha"
 us3= User.find(3)
 owners = us3.owner
 blog_ids = owners.pluck(:blog_id) # => [45, 3, 23]
-blogs = Blog.where(id: blogs_ids)
+blogs = Blog.where(id: blog_ids)
 puts "Blogs del usuario 3: #{blogs}"
 puts "Tarea 23. Hecha"
 
@@ -267,3 +268,53 @@ us3 = User.where(first_name: "Usuario 3").first
 
 puts us3.message
 puts "Tarea 25. Hecha"
+
+# tarea 26  
+#obtenga todas las publicaciones asociadas al blog con id = 5 y quién dejó cada publicación.
+
+bl5 = Blog.find(5)
+posts = Post.where(blog: bl5)
+users = posts.pluck(:user_id)
+puts User.where(id: users)
+puts " Los blogs con id5 son: #{posts.count}"
+puts "Tarea 26 hecha"
+
+#tarea 27   
+#Obtenga todos los mensajes asociados al blog con id = 5, junto con toda la información de los usuarios que dejaron mensajes.
+
+bl5 = Blog.find(5)
+posts = Post.where(blog: bl5)
+msgs = Message.where(post: posts)
+users = msgs.pluck(:user_id)
+
+puts User.where(id: users)
+
+puts "Los mensajes asociados al Blog 5 son: #{msgs.count}"
+
+puts "Tarea 27 hecha"
+
+# tarea 28   
+#Obtenga toda la información de los usuarios que son propietarios del primer blog (haz que esto funcione con un simple Blog.first.propietarios).
+
+owners = Blog.first.owner
+users = owners.pluck(:user_id)
+User.where(id: users).each do |t|
+  puts "#{t.first_name} #{t.last_name} #{t.email_address}"
+end
+
+puts "tarea 28 hecha"
+
+#tarea 29   
+#Cámbielo, es decir, el primer usuario ya no es propietario del primer blog.
+
+us1 = User.first
+usul = User.last
+bl1 = Blog.first
+own = Owner.where(user: us1, blog: bl1)
+
+
+own.update_all(user_id: usul.id)
+
+puts Owner.where(user: us1, blog: bl1).count
+
+puts "tarea 29 hecha"
